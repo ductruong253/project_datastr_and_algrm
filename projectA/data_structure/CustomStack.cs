@@ -1,21 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace projectA.data_structure
+﻿namespace projectA.data_structure
 {
     internal class CustomStack<T>
     {
         private int count;
-        private Node<T> head;
+        
+        private Node<T>? tail;
 
-        public CustomStack() { }
+        public int Count { get { return count; } }
 
-        public void Push(T value)
+        public CustomStack()
         {
-            Node<T> node = new Node<T>(value, null);
+            count = 0;
         }
+
+        public void push(T value)
+        {
+            Node<T> node = new Node<T>(value);
+            node.Previous = tail;
+            tail = node;
+            count++;
+        }
+
+        public T peek()
+        {
+            return tail.Data;
+        }
+
+        public T pop()
+        {
+            T data = tail.Data;
+            tail = tail.Previous;
+            tail.Next = null;
+            count--;
+            return data;
+        }
+        
     }
 }

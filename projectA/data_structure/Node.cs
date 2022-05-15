@@ -1,29 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace projectA.data_structure
+﻿namespace projectA.data_structure
 {
     internal class Node<T>
     {
         private T data;
-        private Node<T> next;
+        private Node<T>? next;
+        private Node<T>? previous;
 
         public Node(){}
-        public Node(T data, Node<T> next)
+        public Node(T data)
         {
             this.data = data;
-            this.next = next;
         }
 
-        public T Data;
-        public Node<T> Next;
+        public T Data
+        {
+            get { return data; }
+            set { data = value; }
+        }
+        public Node<T> Next
+        {
+            get { return next; }
+            set { next = value; }
+        }
+        public Node<T> Previous
+        {
+            get { return previous; }
+            set { previous = value; }
+        }
 
         public Boolean hasNext()
         {
             return next != null;
+        }
+
+        public Boolean hasPrev()
+        {
+            return previous != null;
         }
     }
 }
