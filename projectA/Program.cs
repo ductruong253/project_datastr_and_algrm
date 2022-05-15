@@ -1,5 +1,6 @@
 ﻿using System;
 using projectA.data_structure;
+using projectA.ult;
 
 namespace projectA
 {
@@ -7,9 +8,9 @@ namespace projectA
     {
         static void Main(string[] args)
         {
-            CustomStack<string> stack = new CustomStack<string>();
-            stack.push("sad");
-            Console.WriteLine(stack.peek());
+            string[] data = IOHelper.readDataFromFile("data/data.txt");
+            cQueue<string> result = PolishNotationBuilder.postfixBuild(data[0]);
+            Console.WriteLine(result.toString());
         }
     }
 }
