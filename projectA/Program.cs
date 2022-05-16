@@ -9,8 +9,24 @@ namespace projectA
         static void Main(string[] args)
         {
             string[] data = IOHelper.readDataFromFile("data/data.txt");
-            cQueue<string> result = PolishNotationBuilder.postfixBuild(data[0]);
-            Console.WriteLine(result.toString());
+            Queue<string> result = PolishNotationBuilder.postfixBuild(data[0]);
+            Console.WriteLine(result.ToString());
+
+            /*cStack<string> stack = new cStack<string>();
+            Console.WriteLine(stack.toString());
+            stack.push("5");
+            Console.WriteLine(stack.toString());
+            Console.WriteLine(stack.peek());
+            stack.push("6");
+            Console.WriteLine(stack.toString());
+            Console.WriteLine(stack.peek());
+            stack.pop();
+            Console.WriteLine(stack.toString());
+            Console.WriteLine(stack.peek());
+            stack.pop();
+            Console.WriteLine(stack.toString());
+            stack.push("1");
+            Console.WriteLine(stack.toString());*/
         }
     }
 }

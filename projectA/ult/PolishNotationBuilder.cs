@@ -11,10 +11,10 @@ namespace projectA.ult
     {
         private const string operators = "()!^/*-+";
         private const string numerics = "0123456789";
-        public static cQueue<string> postfixBuild(string original)
+        public static Queue<string> postfixBuild(string original)
         {
-            cStack<string> stack = new cStack<string>();
-            cQueue<string> result = new cQueue<string>();
+            Stack<string> stack = new Stack<string>();
+            Queue<string> result = new Queue<string>();
 
             int originalLen = original.Length;
             int idx = 0;
@@ -22,7 +22,7 @@ namespace projectA.ult
             string currentOprt = "";
             if (original[0].Equals('-') || original[0].Equals('+'))
             {
-                result.enQueue("0");
+                result.Enqueue("0");
             }
             while (idx < originalLen)
             {
@@ -37,7 +37,7 @@ namespace projectA.ult
                         else break;
                         idx++;
                     }
-                    result.enQueue(tempStr);
+                    result.Enqueue(tempStr);
                     tempStr = "";
                 }
                 else if (isOperator(original[idx]))
@@ -47,33 +47,34 @@ namespace projectA.ult
                     {
                         do
                         {
-                            result.enQueue(stack.pop());
-                        }while (!stack.peek().ToString().Equals("("));
-                        stack.pop();
+                            result.Enqueue(stack.Pop());
+                        }while (!stack.Peek().ToString().Equals("("));
+                        stack.Pop();
                     }
                     else
                     {
                         if (currentOprt.Equals("("))
                         {
-                            if (original[idx + 1].ToString().Equals("-")) result.enQueue("0");
+                            if (original[idx + 1].ToString().Equals("-")) result.Enqueue("0");
                         }
-                        else if (!stack.isEmpty())
+                        else if (stack.Count!=0)
                         {
-                            if (oprtRankCheck(currentOprt) < oprtRankCheck(stack.peek()))
+                            while (oprtRankCheck(currentOprt) < oprtRankCheck(stack.Peek()))
                             {
-                                result.enQueue(stack.pop());
+                                result.Enqueue(stack.Pop());
+                                if (stack.Count==0) break;
                             }
                         }
-                        stack.push(currentOprt);
+                        stack.Push(currentOprt);
                     }
                     idx++;
                 }
-                Console.WriteLine(stack.toString());
-                Console.WriteLine(result.toString());
+                Console.WriteLine("Stack: {0}", stackToString(stack));
+                Console.WriteLine("Queue: {0}", result.ToString());
             }
-            while (!stack.isEmpty())
+            while (stack.Count!=0)
             {
-                result.enQueue(stack.pop());
+                result.Enqueue(stack.Pop());
             }
             return result;
         }
@@ -107,6 +108,18 @@ namespace projectA.ult
                 default:
                     return 0;
             }
+        }
+        private static string stackToString(Stack<string> stack)
+        {
+            stack.CopyTo
+            string result = "]";
+            while (stack.Count != 0)
+            {
+                result = stack.Pop() + result;
+                if (stack.Count != 0) result = ", " + result;
+            }
+            result += "[";
+            return result;
         }
     }
 }

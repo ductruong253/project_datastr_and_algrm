@@ -12,19 +12,28 @@
 
         public cStack()
         {
+            head = null;
+            tail = null;
             count = 0;
         }
 
-        public void push(T value)
+        public void Push(T value)
         {
             Node<T> node = new Node<T>(value);
-            node.Previous = tail;
-            tail = node;
-            if (head == null) head = node;
+            if (tail == null)
+            {
+                head = tail = node;
+            }
+            else
+            {
+                node.Previous = tail;
+                tail.Next = node;
+                tail = node;
+            }
             count++;
         }
 
-        public T peek()
+        public T Peek()
         {
             return tail.Data;
         }
@@ -32,10 +41,17 @@
         public T pop()
         {
             T data = tail.Data;
-            tail = tail.Previous;
-            if (tail != null)
+            if (tail.Previous == null)
             {
-                tail.Next = null;
+                tail = head;
+            }
+            else
+            {
+                tail = tail.Previous;
+                if (tail != null)
+                {
+                    tail.Next = null;
+                }
             }
             count--;
             return data;
@@ -51,7 +67,7 @@
             string result = "[";
             if (head != null)
             {
-                Node<T> node = tail;
+                Node<T> node = head;
                 while (node != null)
                 {
                     result += node.Data.ToString();

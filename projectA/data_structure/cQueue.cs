@@ -15,7 +15,7 @@
             count = 0;
         }
 
-        public void enQueue(T value)
+        public void Enqueue(T value)
         {
             Node<T> node = new Node<T>(value);
             if (head == null)
@@ -36,10 +36,12 @@
             return head.Data;
         }
 
-        public T deQueue()
+        public T Dequeue()
         {
             T data = head.Data;
-            head = head.Next;
+            Node<T> node = head.Next;
+            head.Next = null;
+            head = node;
             if (head != null)
             {
                 head.Previous = null;
