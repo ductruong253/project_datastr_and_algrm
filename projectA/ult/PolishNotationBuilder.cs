@@ -9,72 +9,79 @@ namespace projectA.ult
 {
     internal class PolishNotationBuilder
     {
-        private const string operators = "()!^/*-+";
+        private const string operators = "!^/*-+";
+        private const string brackets = "()";
         private const string numerics = "0123456789";
         public static Queue<string> postfixBuild(string original)
         {
-            Stack<string> stack = new Stack<string>();
+            Stack<char> stack = new Stack<char>();
             Queue<string> result = new Queue<string>();
-
+            original = "(" + original + ")";
             int originalLen = original.Length;
             int idx = 0;
             string tempStr = "";
-            string currentOprt = "";
+            char currentChar;
             if (original[0].Equals('-') || original[0].Equals('+'))
             {
                 result.Enqueue("0");
             }
             while (idx < originalLen)
             {
-                if (isNumeric(original[idx]))
+                currentChar = original[idx];
+                if (isNumeric(currentChar))
                 {
+                    int latch = idx;
                     while (idx < originalLen)
                     {
-                        if ((isNumeric(original[idx]) || original[idx].Equals(".")))
+                        currentChar = original[idx];
+                        if ((isNumeric(currentChar) || currentChar.Equals('.')))
                         {
-                            tempStr += original[idx];
+                            tempStr += currentChar;
                         }
                         else break;
                         idx++;
                     }
+                    if (original[latch - 1].Equals('-') && original[latch - 2].Equals('('))
+                    {
+                        tempStr = "-" + tempStr;
+                        stack.Pop();
+                    }
                     result.Enqueue(tempStr);
                     tempStr = "";
                 }
-                else if (isOperator(original[idx]))
+                else if (isOperator(currentChar))
                 {
-                    currentOprt = original[idx].ToString();
-                    if (currentOprt.Equals(")"))
+                    if (stack.Count != 0)
+                    {
+                        while (oprtRankCheck(currentChar) < oprtRankCheck(stack.Peek()))
+                        {
+                            result.Enqueue(stack.Pop().ToString());
+                            if (stack.Count == 0) break;
+                        }
+                    }
+                    stack.Push(currentChar);
+                    idx++;
+                }
+                else if (isBracket(currentChar))
+                {
+                    if (currentChar.Equals(')'))
                     {
                         do
                         {
-                            result.Enqueue(stack.Pop());
-                        }while (!stack.Peek().ToString().Equals("("));
+                            result.Enqueue(stack.Pop().ToString());
+                        } while (!stack.Peek().ToString().Equals("("));
                         stack.Pop();
                     }
-                    else
-                    {
-                        if (currentOprt.Equals("("))
-                        {
-                            if (original[idx + 1].ToString().Equals("-")) result.Enqueue("0");
-                        }
-                        else if (stack.Count!=0)
-                        {
-                            while (oprtRankCheck(currentOprt) < oprtRankCheck(stack.Peek()))
-                            {
-                                result.Enqueue(stack.Pop());
-                                if (stack.Count==0) break;
-                            }
-                        }
-                        stack.Push(currentOprt);
-                    }
+                    else stack.Push(currentChar);
                     idx++;
                 }
+                Console.WriteLine("-----------------------------------------");
                 Console.WriteLine("Stack: {0}", stackToString(stack));
-                Console.WriteLine("Queue: {0}", result.ToString());
+                Console.WriteLine("Queue: {0}", queueToString(result));
             }
-            while (stack.Count!=0)
+            while (stack.Count != 0)
             {
-                result.Enqueue(stack.Pop());
+                result.Enqueue(stack.Pop().ToString());
             }
             return result;
         }
@@ -88,37 +95,56 @@ namespace projectA.ult
         {
             return numerics.Contains(check);
         }
+        private static bool isBracket(char check)
+        {
+            return brackets.Contains(check);
+        }
 
-        private static int oprtRankCheck(string oprt)
+        private static int oprtRankCheck(char oprt)
         {
             switch (oprt)
             {
-                case "!":
+                case '!':
                     return 6;
-                case "^":
+                case '^':
                     return 5;
-                case "/":
+                case '/':
                     return 4;
-                case "*":
+                case '*':
                     return 3;
-                case "-":
+                case '-':
                     return 2;
-                case "+":
+                case '+':
                     return 1;
                 default:
                     return 0;
             }
         }
-        private static string stackToString(Stack<string> stack)
+        public static string stackToString(Stack<char> stack)
         {
-            stack.CopyTo
-            string result = "]";
-            while (stack.Count != 0)
+            Stack<char> newStack = new Stack<char>(stack);
+            newStack.Reverse();
+            string result = "[";
+            while (newStack.Count != 0)
             {
-                result = stack.Pop() + result;
-                if (stack.Count != 0) result = ", " + result;
+                result += newStack.Pop();
+                if (newStack.Count != 0) result += ", ";
             }
-            result += "[";
+            result += "]";
+            return result;
+        }
+
+        public static string queueToString(Queue<string> queue)
+        {
+            Queue<string> newqueue = new Queue<string>(queue);
+            newqueue.Reverse();
+            string result = "[";
+            while (newqueue.Count != 0)
+            {
+                result += newqueue.Dequeue();
+                if (newqueue.Count != 0) result += ", ";
+            }
+            result += "]";
             return result;
         }
     }

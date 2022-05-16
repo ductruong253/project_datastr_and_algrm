@@ -10,7 +10,7 @@ namespace projectA
         {
             string[] data = IOHelper.readDataFromFile("data/data.txt");
             Queue<string> result = PolishNotationBuilder.postfixBuild(data[0]);
-            Console.WriteLine(result.ToString());
+            Console.WriteLine(PolishNotationBuilder.queueToString(result));
 
             /*cStack<string> stack = new cStack<string>();
             Console.WriteLine(stack.toString());
