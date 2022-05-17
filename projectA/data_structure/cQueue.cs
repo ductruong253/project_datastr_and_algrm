@@ -36,9 +36,9 @@
             return head.Data;
         }
 
-        public T Dequeue()
+        public T? Dequeue()
         {
-            if (head == null) return default(T);
+            if (head == null) return default;
             T data = head.Data;
             head = head.Next;
             if (head == null) tail = null;
