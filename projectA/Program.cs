@@ -1,6 +1,4 @@
-﻿using System;
-using projectA.data_structure;
-using projectA.ult;
+﻿using projectA.ult;
 
 namespace projectA
 {
@@ -8,25 +6,22 @@ namespace projectA
     {
         static void Main(string[] args)
         {
-            string[] data = IOHelper.readDataFromFile("data/data.txt");
-            Queue<string> result = PolishNotationBuilder.postfixBuild(data[0]);
-            Console.WriteLine(PolishNotationBuilder.queueToString(result));
-
-            /*cStack<string> stack = new cStack<string>();
-            Console.WriteLine(stack.toString());
-            stack.push("5");
-            Console.WriteLine(stack.toString());
-            Console.WriteLine(stack.peek());
-            stack.push("6");
-            Console.WriteLine(stack.toString());
-            Console.WriteLine(stack.peek());
-            stack.pop();
-            Console.WriteLine(stack.toString());
-            Console.WriteLine(stack.peek());
-            stack.pop();
-            Console.WriteLine(stack.toString());
-            stack.push("1");
-            Console.WriteLine(stack.toString());*/
+            string[] data = IOHelper.readDataFromFile("data/BIEUTHUC.inp");
+            double[] result = new double[data.Length];
+            for (int i = 0; i < data.Length; i++)
+            {
+                try
+                {
+                    result[i] = Calculator.execute(data[i]);
+                    Console.WriteLine(data[i] + " = " + result[i]);
+                }
+                catch (Exception e)
+                {
+                    result[i] = 0;
+                    Console.WriteLine("Du lieu khong hop le");
+                }
+            }
+            IOHelper.writeToFile("data/KETQUA.out", result);
         }
     }
 }

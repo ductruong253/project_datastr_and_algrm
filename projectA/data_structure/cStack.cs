@@ -4,55 +4,43 @@
     {
         private int count;
 
-        private Node<T>? head;
-
-        private Node<T>? tail;
-
+        private Node<T>? top;
         public int Count { get { return count; } }
 
         public cStack()
         {
-            head = null;
-            tail = null;
+            top = null;
             count = 0;
         }
 
         public void Push(T value)
         {
             Node<T> node = new Node<T>(value);
-            if (tail == null)
+            if (top == null)
             {
-                head = tail = node;
+                node.Next = null;
             }
             else
             {
-                node.Previous = tail;
-                tail.Next = node;
-                tail = node;
+                node.Next = top;
             }
+            top = node;
             count++;
         }
 
         public T Peek()
         {
-            return tail.Data;
+            return top.Data;
         }
 
-        public T pop()
+        public T Pop()
         {
-            T data = tail.Data;
-            if (tail.Previous == null)
+            if (top == null)
             {
-                tail = head;
+                return default(T);
             }
-            else
-            {
-                tail = tail.Previous;
-                if (tail != null)
-                {
-                    tail.Next = null;
-                }
-            }
+            T data = top.Data;
+            top = top.Next;
             count--;
             return data;
         }
@@ -62,22 +50,19 @@
             return count == 0;
         }
 
-        public string toString()
+        public cStack<T> Reverse()
         {
-            string result = "[";
-            if (head != null)
+            cStack<T> reversed = new cStack<T>();
+            if (top != null)
             {
-                Node<T> node = head;
-                while (node != null)
+                Node<T> node = top;
+                do
                 {
-                    result += node.Data.ToString();
-                    if (node.hasNext()) result += ", ";
+                    reversed.Push(node.Data);
                     node = node.Next;
-                }
+                } while (node.hasNext());
             }
-            result += "]";
-            return result;
+            return reversed;
         }
-
     }
 }

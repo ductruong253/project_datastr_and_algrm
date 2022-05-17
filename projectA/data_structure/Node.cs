@@ -6,10 +6,11 @@
         private Node<T>? next;
         private Node<T>? previous;
 
-        public Node(){}
+        public Node() { }
         public Node(T data)
         {
             this.data = data;
+            next = previous = null;
         }
 
         public T Data

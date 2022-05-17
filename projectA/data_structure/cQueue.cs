@@ -13,15 +13,15 @@
         public cQueue()
         {
             count = 0;
+            head = tail = null;
         }
 
         public void Enqueue(T value)
         {
             Node<T> node = new Node<T>(value);
-            if (head == null)
+            if (tail == null)
             {
-                head = node;
-                tail = node;
+                head = tail = node;
             }
             else
             {
@@ -31,21 +31,17 @@
             count++;
         }
 
-        public T peek()
+        public T Peek()
         {
             return head.Data;
         }
 
         public T Dequeue()
         {
+            if (head == null) return default(T);
             T data = head.Data;
-            Node<T> node = head.Next;
-            head.Next = null;
-            head = node;
-            if (head != null)
-            {
-                head.Previous = null;
-            }
+            head = head.Next;
+            if (head == null) tail = null;
             count--;
             return data;
         }
@@ -55,21 +51,19 @@
             return head == null;
         }
 
-        public string toString()
+        public cQueue<T> Copy()
         {
-            string result = "[";
+            cQueue<T> copy = new cQueue<T>();
             if (head != null)
             {
                 Node<T> node = head;
-                while (node != null)
+                do
                 {
-                    result += node.Data.ToString();
-                    if (node.hasNext()) result += ", ";
+                    copy.Enqueue(node.Data);
                     node = node.Next;
-                }
+                } while (node.hasNext());
             }
-            result += "]";
-            return result;
+            return copy;
         }
     }
 }
