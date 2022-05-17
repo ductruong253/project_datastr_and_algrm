@@ -4,13 +4,15 @@
     {
         private T data;
         private Node<T>? next;
-        private Node<T>? previous;
 
-        public Node() { }
+        public Node()
+        {
+            next = null;
+        }
         public Node(T data)
         {
             this.data = data;
-            next = previous = null;
+            next = null;
         }
 
         public T Data
@@ -23,20 +25,10 @@
             get { return next; }
             set { next = value; }
         }
-        public Node<T> Previous
-        {
-            get { return previous; }
-            set { previous = value; }
-        }
 
         public Boolean hasNext()
         {
             return next != null;
-        }
-
-        public Boolean hasPrev()
-        {
-            return previous != null;
         }
     }
 }
